@@ -1,8 +1,9 @@
 # depslib dependency file v1.0
-1740933562 source:d:\semester 3\struktur data prak\modul8\main.cpp
+1762620225 source:d:\semester 3\struktur data prak\modul8\main.cpp
 	<iostream>
+	"header.h"
 
-1762591154 source:d:\semester 3\struktur data prak\modul8\sources.cpp
+1762620225 source:d:\semester 3\struktur data prak\modul8\sources.cpp
 	"header.h"
 	<iostream>
 

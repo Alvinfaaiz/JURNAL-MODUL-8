@@ -102,9 +102,9 @@ void printPatient(address p){
             cout << "Nama: " << p->info.nama << endl;
             cout << "Usia: " << p->info.usia << endl;
             cout << "Pekerjaan: " << p->info.pekerjaan << endl;
-            cout << "Prioritas: " << (p->info.prioritas ? "Ya" : "Tidak") << endl;
+            cout << "Prioritas: " << p->info.prioritas<< endl;
             cout << "Nomor Antrian: " << p->info.nomorAntrean << endl;
-            cout << "----------------------------" << endl;
+            cout << "Vaksinasi berhasil." << endl;
     }
 }
 
@@ -112,13 +112,11 @@ void serveQueue(Queue &Q){
     int count = 0;
     address p;
 
-    cout << "=== Proses Vaksinasi ===" << endl;
-
     while (!isEmpty(Q) && count < 5) {
         p = Q.head;
         printPatient(p);
         cout << "Vaksinasi berhasil." << endl << endl;
-
+        cout << "-----------------------------" << endl;
         dequeue(Q, p);
         count++;
     }
@@ -135,49 +133,41 @@ void reassignQueue(Queue &Q){
         }
         p = p->next;
     }
-    cout << "Semua warga kini berstatus prioritas." << endl;
+    cout << "data prioritas pasien telah di update." << endl;
 }
 
-void emergencyHandle(Queue &Q, int nomorAntrian){
-    if (isEmpty(Q)) {
-        cout << "Antrean kosong." << endl;
-        return;
-    }
+void emergencyHandle(Queue &Q, int nomorAntrean) {
+    if (isEmpty(Q)) return;
 
     address prev = nullptr;
     address curr = Q.head;
 
-    // cari elemen dengan nomor antrean tertentu
-    while (curr != nullptr && curr->info.nomorAntrean != nomorAntrian) {
+
+    while (curr != nullptr && curr->info.nomorAntrean != nomorAntrean) {
         prev = curr;
         curr = curr->next;
     }
 
     if (curr == nullptr) {
-        cout << "Nomor antrean tidak ditemukan." << endl;
+        cout << "Nomor antrean " << nomorAntrean << " tidak ditemukan." << endl;
         return;
     }
 
-    // ubah jadi prioritas
     curr->info.prioritas = true;
 
-    // kalau dia sudah di depan, tidak perlu dipindah
-    if (curr == Q.head) {
-        cout << "Warga sudah berada di depan antrean." << endl;
-        return;
+    if (curr == Q.head) return;
+
+    if (curr == Q.tail) {
+        Q.tail = prev;
+    }
+    if (prev != nullptr) {
+        prev->next = curr->next;
     }
 
-    // keluarkan dari posisi lamanya
-    if (curr == Q.tail)
-        Q.tail = prev;
-    if (prev != nullptr)
-        prev->next = curr->next;
-
-    // pindahkan ke depan
     curr->next = Q.head;
     Q.head = curr;
 
-    cout << "Warga dengan nomor antrean " << nomorAntrian
-         << " telah diprioritaskan dan dipindah ke depan antrean." << endl;
+    cout << "Pasien dengan nomor antrean " <<endl;
 }
+
 

@@ -1,68 +1,60 @@
 #include <iostream>
-#include <string>
+
 #include "header.h"
 using namespace std;
 
 int main() {
     Queue Q;
     createQueue(Q);
+    address p;
+    infotype x;
+    int nomor, n, i, jml;
+    string nama, pekerjaan;
+    int usia, nomorAntrean;
 
-    int n;
-    cout << "Masukkan banyak pasien yang ingin diinput: ";
+    cout << "masukkan banyak pasien yang ingin di input: ";
     cin >> n;
-    cin.ignore(); // bersihkan buffer newline
 
     for (int i = 1; i <= n; i++) {
-        cout << "\nPasien ke-" << i << endl;
-
         string nama, pekerjaan;
         int usia, nomorAntrean;
 
-        cout << "Nama: ";
+        cout << "\npasien ke-" << i << endl;
+
+        cout << "nama: ";
         cin >> nama;
-        cout << "Usia: ";
+
+        cout << "usia: ";
         cin >> usia;
 
-        cout << "Pekerjaan: ";
+        cout << "pekerjaan: ";
         cin >> pekerjaan;
 
-        cout << "Nomor antrean: ";
+        cout << "nomor antrean: ";
         cin >> nomorAntrean;
 
-        // alokasi dan masukkan ke antrian
-        address p = allocate(nama, usia, pekerjaan, nomorAntrean);
+        p = allocate(nama, usia, pekerjaan, nomorAntrean);
         enqueue(Q, p);
     }
-    cout << "banyak pasien dalam antrean: " << Size(Q) << endl;
+    cout << endl;
+    cout << "\nbanyak pasien dalam antrean: " << Size(Q) << endl;
+    cout << endl;
 
-    cout << "\n=== HASIL INPUT ANTRIAN ===" << endl;
-    cout << "Banyak pasien dalam antrean: " << Size(Q) << endl;
+    serveQueue(Q);
+    cout << endl;
+    cout << endl;
 
-    cout << "\n=== PROSES VAKSINASI (SERVE QUEUE) ===" << endl;
+    cout << "\nmasukkan nomor antrean yang ingin di prioritaskan: ";
+    cin >> nomor;
+    emergencyHandle(Q, nomor);
     serveQueue(Q);
 
-    // Setelah sebagian pasien divaksin, antrean berkurang
-    cout << "\nSisa pasien dalam antrean: " << Size(Q) << endl;
+    cout << endl;
+    cout << endl;
 
-    // Emergency handle
-    int nomorPrioritas;
-    cout << "\nMasukkan nomor antrean yang ingin diprioritaskan: ";
-    cin >> nomorPrioritas;
-    emergencyHandle(Q, nomorPrioritas);
 
-    cout << "\n=== PROSES VAKSINASI SESUDAH EMERGENCY HANDLE ===" << endl;
-    serveQueue(Q);
-
-    // Reassign seluruh pasien jadi prioritas
-    cout << "\n=== UPDATE SEMUA PASIEN JADI PRIORITAS ===" << endl;
     reassignQueue(Q);
-    cout << "Data prioritas pasien telah diupdate.\n";
-
-    cout << "\n=== PROSES VAKSINASI SESUDAH UPDATE PRIORITAS ===" << endl;
     serveQueue(Q);
-
-    cout << "\nSisa pasien dalam antrean: " << Size(Q) << endl;
-    cout << "\n=== SEMUA PROSES SELESAI ===" << endl;
 
     return 0;
 }
